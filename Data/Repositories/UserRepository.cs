@@ -29,11 +29,12 @@ namespace Data.Repositories
             => _dbContext.Users;
 
         public async Task<User> SelectByIdAsync(long id)
-            => await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            => await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
 
 
         public async Task<User> UpdateAsync(User user)
         {
+            _dbContext.ChangeTracker.Clear();
             var model = (_dbContext.Update(user)).Entity;
             await _dbContext.SaveChangesAsync();
             return model;

@@ -25,7 +25,8 @@ namespace Console_To_do_list.Representation
             Console.WriteLine("Press 2: Enter your profile");
             Console.WriteLine("Press 3: View Users");
             Console.WriteLine("Press 4: Exit");
-            int num = int.Parse(Console.ReadLine());
+            int num = Validation();
+            Console.Clear();
             switch (num)
             {
                 case 1:
@@ -33,7 +34,6 @@ namespace Console_To_do_list.Representation
                     goto revisit;
                 case 2:
                     PersonalProfile();
-
                     break;
                 case 3:
                     DisplayAll();
@@ -41,12 +41,22 @@ namespace Console_To_do_list.Representation
                 case 4:
                     Environment.Exit(0);
                     break;
+                default:
+                    Console.WriteLine("!!!Please enter the existed number you want:");
+                    goto revisit;
             }
             Console.ReadKey();
         }
-        public void CreateTask()
+        public int Validation()
         {
-
+            int num;
+            string input = Console.ReadLine();
+            while (!(int.TryParse(input, out num)))
+            {
+                Console.WriteLine("The input is unsupported format, please enter number:");
+                input = Console.ReadLine();
+            }
+            return num;
         }
         public void CreateUser()
         {
@@ -76,7 +86,6 @@ namespace Console_To_do_list.Representation
             foreach (var user in users)
             {
                 Console.WriteLine($"Id:{user.Id}  FirstName:{user.FirstName}  LastName:{user.LastName}");
-                Console.WriteLine();
             }
             Console.WriteLine();
         }
@@ -101,7 +110,7 @@ namespace Console_To_do_list.Representation
             Console.Clear();
             if (dto.ToDoLists is null)
                 dto.ToDoLists = new List<ToDoListForResultDto>();
-            re:
+            revisit:
             ToDoListForCreationDto task = new ToDoListForCreationDto();
             Console.WriteLine($"{dto.FirstName} please choose one of them:");
             Console.WriteLine("Press 1: Add Task");
@@ -110,7 +119,8 @@ namespace Console_To_do_list.Representation
             Console.WriteLine("Press 4: Modify Task");
             Console.WriteLine("Press 5: Edit Profile");
             Console.WriteLine("Press 6: Exit");
-            int num = int.Parse(Console.ReadLine());
+            int num = Validation();
+            Console.Clear();
             switch (num)
             {
                 case 1:
@@ -160,19 +170,43 @@ namespace Console_To_do_list.Representation
                     updatedDto.TaskDescription = descriptionUpdated;
                     updatedDto.Status = false;
                     updatedDto.UserId = dto.Id;
-                    var updatedResult = await _toDoListService.UpdateAsync(updatedDto);
+                    var updatedResult = _toDoListService.UpdateAsync(updatedDto).Result;
                     dto.ToDoLists.Add(updatedResult);
                     Console.WriteLine("Task updated");
                     Thread.Sleep(3000);
                     Console.Clear();
                     break;
+                case 5:
+                    Console.Write("FirstName:");
+                    string firstName = Console.ReadLine();
+                    Console.Write("LastName:");
+                    string lastName = Console.ReadLine();
+                    Console.Write("Email:");
+                    string email = Console.ReadLine();
+                    Console.Write("Password:");
+                    string password = Console.ReadLine();
+
+                    UserForUpdateDto user = new UserForUpdateDto()
+                    {
+                        Id = dto.Id,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        Email = email,
+                        Password = password,
+
+                    };
+                    var updatedUser = _userService.UpdateAsync(user).Result;
+                    Console.WriteLine("User is updated");
+                    dto = updatedUser;
+                    break;
                 case 6:
-                    Environment.Exit(0);
+                    Display();
                     break;
                 default:
-                    break;
+                    Console.WriteLine("!!!Please enter the existed number:");
+                    goto revisit;
             }
-            goto re;
+            goto revisit;
         }
     }
 }
