@@ -28,7 +28,8 @@ namespace Console_To_do_list.Service.Services
         {
             var task = await _toDoListRepository.SelectByIdAsync(id);
             if (task is null)
-                throw new CustomException(404, "Task is not found");
+                return false;
+            // throw new CustomException(404, "Task is not found");
 
             return await _toDoListRepository.DeleteAsync(id);
         }
@@ -44,7 +45,8 @@ namespace Console_To_do_list.Service.Services
         {
             var task = await _toDoListRepository.SelectByIdAsync(id);
             if (task is null)
-                throw new CustomException(404, "Task is not found");
+                return null;
+            //throw new CustomException(404, "Task is not found");
             return mapper.Map<ToDoListForResultDto>(task);
         }
 
@@ -52,7 +54,8 @@ namespace Console_To_do_list.Service.Services
         {
             var task = await _toDoListRepository.SelectByIdAsync(dto.Id);
             if (task is null)
-                throw new CustomException(404, "Task is not found");
+                return null;
+            //throw new CustomException(404, "Task is not found");
 
             var list = mapper.Map<ToDoList>(dto);
             list.UpdatedAt = DateTime.UtcNow;

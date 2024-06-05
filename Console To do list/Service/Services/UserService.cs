@@ -25,7 +25,8 @@ namespace Console_To_do_list.Service.Services
             var user = users.FirstOrDefault(u => u.Password == dto.Password);
             if (user != null)
             {
-                throw new CustomException(400, "User is already exist");
+                return null;
+                // throw new CustomException(400, "User is already exist");
             }
             var mappedUser = this.mapper.Map<User>(dto);
             mappedUser.CreatedAt = DateTime.UtcNow;
@@ -38,7 +39,8 @@ namespace Console_To_do_list.Service.Services
         {
             var user = await _userRepository.SelectByIdAsync(id);
             if (user is null)
-                throw new CustomException(404, "Course is not found");
+                return false;
+            //throw new CustomException(404, "Course is not found");
             await _userRepository.DeleteAsync(id);
             return true;
         }
@@ -55,7 +57,8 @@ namespace Console_To_do_list.Service.Services
             var user = await _userRepository.SelectByIdAsync(id);
             if (user == null)
             {
-                throw new CustomException(404, "User is not found");
+                return null;
+                // throw new CustomException(404, "User is not found");
             }
             return mapper.Map<UserForResultDto>(user);
         }
@@ -64,7 +67,8 @@ namespace Console_To_do_list.Service.Services
         {
             var user = await _userRepository.SelectByIdAsync(dto.Id);
             if (user == null)
-                throw new CustomException(404, "User is not found");
+                return null;
+            // throw new CustomException(404, "User is not found");
 
             User mappedUser = mapper.Map<User>(dto);
             mappedUser.UpdatedAt = DateTime.UtcNow;
@@ -77,7 +81,8 @@ namespace Console_To_do_list.Service.Services
             var users = await _userRepository.SelectAll().ToListAsync();
             var user = users.FirstOrDefault(u => u.Password == dto.Password && u.Email == dto.Email);
             if (user == null)
-                throw new CustomException(404, "User is not found");
+                return null;
+            //throw new CustomException(404, "User is not found");
 
             return mapper.Map<UserForResultDto>(user);
         }

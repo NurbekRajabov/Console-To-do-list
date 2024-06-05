@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console To do list", "Console To do list\Console To do list.csproj", "{AB2566FD-C390-482E-B79F-DA8D505AF817}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console To do list", "Console To do list\Console To do list.csproj", "{AB2566FD-C390-482E-B79F-DA8D505AF817}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{539A6BD8-E4B8-4AD3-BFE9-38024307E866}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{539A6BD8-E4B8-4AD3-BFE9-38024307E866}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskApp", "TaskApp\TaskApp.csproj", "{565C425D-3A44-4D9E-A941-951A944C1144}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{539A6BD8-E4B8-4AD3-BFE9-38024307E866}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{539A6BD8-E4B8-4AD3-BFE9-38024307E866}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{539A6BD8-E4B8-4AD3-BFE9-38024307E866}.Release|Any CPU.Build.0 = Release|Any CPU
+		{565C425D-3A44-4D9E-A941-951A944C1144}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{565C425D-3A44-4D9E-A941-951A944C1144}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{565C425D-3A44-4D9E-A941-951A944C1144}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{565C425D-3A44-4D9E-A941-951A944C1144}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
