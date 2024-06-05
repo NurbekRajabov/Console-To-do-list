@@ -38,6 +38,7 @@ namespace Data.Repositories
             
             var model = (_dbContext.Update(t)).Entity;
             await _dbContext.SaveChangesAsync();
+            _dbContext.ChangeTracker.Clear();
             return model;
         }
     }
