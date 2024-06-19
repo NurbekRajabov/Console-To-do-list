@@ -14,5 +14,6 @@ namespace Data.IRepositories
         Task<bool> DeleteAsync(long id);
         Task<T> UpdateAsync(T t);
         IQueryable<T> SelectAll();
+        Task<bool> SaveChangesAsync();
     }
 }

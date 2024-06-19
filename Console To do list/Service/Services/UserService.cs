@@ -18,43 +18,47 @@ namespace Console_To_do_list.Service.Services
     public class UserService : IUserService
     {
         private readonly IMapper mapper = MappingProfile.Initialize();
-        private readonly IRepository<User> _userRepository = new UserRepository();
+        private readonly IRepository<User> userRepository = new UserRepository();
         public async Task<UserForResultDto> CreateAsync(UserForCreationDto dto)
         {
-            var users = _userRepository.SelectAll();
+            var users = userRepository.SelectAll();
             var user = users.FirstOrDefault(u => u.Password == dto.Password);
             if (user != null)
             {
                 return null;
                 // throw new CustomException(400, "User is already exist");
             }
+
             var mappedUser = this.mapper.Map<User>(dto);
             mappedUser.CreatedAt = DateTime.UtcNow;
-            var insertedUser = await _userRepository.CreateAsync(mappedUser);
-            var result = this.mapper.Map<UserForResultDto>(insertedUser);
-            return result;
+
+            var insertedUser = await userRepository.CreateAsync(mappedUser);
+            await this.userRepository.SaveChangesAsync();
+
+            return this.mapper.Map<UserForResultDto>(insertedUser);
         }
 
         public async Task<bool> RemoveAsync(long id)
         {
-            var user = await _userRepository.SelectByIdAsync(id);
+            var user = await userRepository.SelectByIdAsync(id);
             if (user is null)
                 return false;
             //throw new CustomException(404, "Course is not found");
-            await _userRepository.DeleteAsync(id);
+            await userRepository.DeleteAsync(id);
+            await this.userRepository.SaveChangesAsync();
             return true;
         }
 
         public async Task<IEnumerable<UserForResultDto>> RetrieveAllAsync()
         {
-            var users = await _userRepository.SelectAll()
+            var users = await userRepository.SelectAll()
                 .Include(t => t.ToDoLists).ToListAsync();
             return mapper.Map<IEnumerable<UserForResultDto>>(users);
         }
 
         public async Task<UserForResultDto> RetrieveByIdAsync(long id)
         {
-            var user = await _userRepository.SelectByIdAsync(id);
+            var user = await userRepository.SelectByIdAsync(id);
             if (user == null)
             {
                 return null;
@@ -65,20 +69,20 @@ namespace Console_To_do_list.Service.Services
 
         public async Task<UserForResultDto> UpdateAsync(UserForUpdateDto dto)
         {
-            var user = await _userRepository.SelectByIdAsync(dto.Id);
+            var user = await userRepository.SelectByIdAsync(dto.Id);
             if (user == null)
                 return null;
             // throw new CustomException(404, "User is not found");
 
-            User mappedUser = mapper.Map<User>(dto);
+            User mappedUser = mapper.Map(dto, user);
             mappedUser.UpdatedAt = DateTime.UtcNow;
-            await _userRepository.UpdateAsync(mappedUser);
+            await userRepository.SaveChangesAsync();
             return mapper.Map<UserForResultDto>(mappedUser);
         }
 
         public async Task<UserForResultDto> AccessProfile(UserForAccessProfileDTO dto)
         {
-            var users = await _userRepository.SelectAll().ToListAsync();
+            var users = await userRepository.SelectAll().ToListAsync();
             var user = users.FirstOrDefault(u => u.Password == dto.Password && u.Email == dto.Email);
             if (user == null)
                 return null;

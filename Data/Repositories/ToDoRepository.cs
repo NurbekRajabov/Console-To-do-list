@@ -11,7 +11,6 @@ namespace Data.Repositories
         public async Task<ToDoList> CreateAsync(ToDoList todo)
         {
             await _dbContext.ToDoLists.AddAsync(todo);
-            await _dbContext.SaveChangesAsync();
             return todo;
         }
 
@@ -19,8 +18,12 @@ namespace Data.Repositories
         {
             var entity = await _dbContext.ToDoLists.FirstOrDefaultAsync(t => t.Id == id);
             _dbContext.ToDoLists.Remove(entity);
-            await _dbContext.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return await _dbContext.SaveChangesAsync() > 0;
         }
 
         public IQueryable<ToDoList> SelectAll()
@@ -30,16 +33,13 @@ namespace Data.Repositories
 
         public Task<ToDoList> SelectByIdAsync(long id)
         {
-            return _dbContext.ToDoLists.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
+            return _dbContext.ToDoLists.FirstOrDefaultAsync(t => t.Id == id);
         }
 
         public async Task<ToDoList> UpdateAsync(ToDoList t)
         {
-            
-            var model = (_dbContext.Update(t)).Entity;
-            await _dbContext.SaveChangesAsync();
-            _dbContext.ChangeTracker.Clear();
-            return model;
+            var model = _dbContext.Update(t);
+            return model.Entity;
         }
     }
 }

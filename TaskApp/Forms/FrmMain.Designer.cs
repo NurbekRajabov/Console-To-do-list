@@ -103,6 +103,7 @@
             Controls.Add(btnViewUser);
             Controls.Add(btnEnterProfile);
             Controls.Add(btnCreateUser);
+            FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(3, 4, 3, 4);
             Name = "FrmMain";
             StartPosition = FormStartPosition.CenterScreen;

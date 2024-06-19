@@ -12,6 +12,9 @@ namespace Console_To_do_list.Service.DTOs.ToDoLists
         public string Title { get; set; }
         public string TaskDescription { get; set; }
         public bool Status { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+
         public long UserId { get; set; }
     }
 }

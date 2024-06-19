@@ -13,7 +13,6 @@ namespace Data.Repositories
         public async Task<User> CreateAsync(User user)
         {
             await _dbContext.Users.AddAsync(user);
-            await _dbContext.SaveChangesAsync();
             return user;
         }
 
@@ -21,24 +20,26 @@ namespace Data.Repositories
         {
             var entity = await _dbContext.Users.Include(u => u.ToDoLists).FirstOrDefaultAsync(u => u.Id == id);
             _dbContext.Users.Remove(entity);
-            await _dbContext.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return await this._dbContext.SaveChangesAsync() > 0;
         }
 
         public IQueryable<User> SelectAll()
             => _dbContext.Users;
 
         public async Task<User> SelectByIdAsync(long id)
-            => await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+            => await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
 
 
         public async Task<User> UpdateAsync(User user)
         {
-            _dbContext.ChangeTracker.Clear();
-            var model = (_dbContext.Update(user)).Entity;
-            await _dbContext.SaveChangesAsync();
+            var model = _dbContext.Update(user);
 
-            return model;
+            return model.Entity;
         }
 
     }

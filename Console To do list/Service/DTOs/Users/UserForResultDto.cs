@@ -13,6 +13,9 @@ namespace Console_To_do_list.Service.DTOs.Users
         public long Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+
         public ICollection<ToDoListForResultDto> ToDoLists { get; set; }
     }
 }

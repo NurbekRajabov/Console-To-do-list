@@ -1,4 +1,5 @@
 ﻿using Console_To_do_list.Service.DTOs.Users;
+using Console_To_do_list.Service.Interfaces;
 using Console_To_do_list.Service.Services;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace TaskApp
 {
     public partial class DisplayUsersForm : Form
     {
-        private readonly UserService _service = new UserService();
+        private readonly IUserService _service = new UserService();
         public DisplayUsersForm()
         {
             InitializeComponent();

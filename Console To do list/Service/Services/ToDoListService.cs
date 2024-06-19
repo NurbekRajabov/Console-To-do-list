@@ -21,6 +21,8 @@ namespace Console_To_do_list.Service.Services
             task.CreatedAt = DateTime.UtcNow;
 
             var result = await _toDoListRepository.CreateAsync(task);
+            await this._toDoListRepository.SaveChangesAsync();
+
             return mapper.Map<ToDoListForResultDto>(result);
         }
 
@@ -30,7 +32,7 @@ namespace Console_To_do_list.Service.Services
             if (task is null)
                 return false;
             // throw new CustomException(404, "Task is not found");
-
+            await this._toDoListRepository.SaveChangesAsync();
             return await _toDoListRepository.DeleteAsync(id);
         }
 
@@ -57,11 +59,11 @@ namespace Console_To_do_list.Service.Services
                 return null;
             //throw new CustomException(404, "Task is not found");
 
-            var list = mapper.Map<ToDoList>(dto);
+            var list = mapper.Map(dto, task);
             list.UpdatedAt = DateTime.UtcNow;
             list.CreatedAt = task.CreatedAt;
-            var result = await _toDoListRepository.UpdateAsync(list);
-            return mapper.Map<ToDoListForResultDto>(result);
+            await _toDoListRepository.SaveChangesAsync();
+            return mapper.Map<ToDoListForResultDto>(list);
         }
     }
 }
